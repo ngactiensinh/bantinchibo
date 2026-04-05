@@ -59,9 +59,9 @@ with col_chon:
 thu_vien_link = {
     "Bản tin Tháng 4/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THUONG-KY-THANG-4-2026/",
     "Bản tin Quý I/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-QUY-I-2026/",
-    "Bản tin Tháng 3/2026": "https://heyzine.com/flip-book/701fc3e590.html",
-    "Bản tin Tháng 2/2026": "https://heyzine.com/flip-book/5a1b559093.html",
-    "Bản tin Tháng 1/2026": "https://heyzine.com/flip-book/b8e0a13ea1.html"
+    "Bản tin Tháng 3/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-CHI-BO-THANG-3-2026/",
+    "Bản tin Tháng 2/2026": "https://online.fliphtml5.com/zwykz/okrm/",
+    "Bản tin Tháng 1/2026": "https://online.fliphtml5.com/zwykz/aozs/"
 }
 
 link_hien_tai = thu_vien_link[thang_chon]
