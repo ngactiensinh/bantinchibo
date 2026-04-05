@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import base64
 import pandas as pd
-import os
 
 st.set_page_config(page_title="Báo cáo TGDV - Tuyên Quang", page_icon="🌟", layout="wide")
 
@@ -61,7 +60,9 @@ def hien_thi_tieu_de(tieu_de_chinh):
 # --- MENU ĐIỀU HƯỚNG ---
 st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Qu%E1%BB%91c_huy_Vi%E1%BB%87t_Nam.svg/250px-Qu%E1%BB%91c_huy_Vi%E1%BB%87t_Nam.svg.png", width=100)
 st.sidebar.markdown("### HỆ THỐNG BÁO CÁO TGDV")
-menu = st.sidebar.radio("📌 Lựa chọn chức năng:", ["📝 Nhập Báo Cáo (Cơ sở)", "📊 Bảng Điều Khiển (Lãnh đạo)"])
+
+# THÊM LỰA CHỌN THỨ 3 VÀO MENU
+menu = st.sidebar.radio("📌 Lựa chọn chức năng:", ["📝 Nhập Báo Cáo (Cơ sở)", "📊 Bảng Điều Khiển (Lãnh đạo)", "📖 Bản Tin Chi Bộ"])
 st.sidebar.write("---")
 
 # ==========================================================
@@ -69,6 +70,7 @@ st.sidebar.write("---")
 # ==========================================================
 if menu == "📝 Nhập Báo Cáo (Cơ sở)":
     if "dang_nhap_co_so" not in st.session_state: st.session_state["dang_nhap_co_so"] = False
+
     hien_thi_tieu_de("HỆ THỐNG THU THẬP BÁO CÁO")
 
     if not st.session_state["dang_nhap_co_so"]:
@@ -188,10 +190,11 @@ if menu == "📝 Nhập Báo Cáo (Cơ sở)":
                         except Exception as e: st.error(f"❌ Lỗi mạng: {e}")
 
 # ==========================================================
-# 2. TRANG BẢNG ĐIỀU KHIỂN (DÀNH CHO LÃNH ĐẠO)
+# 2. TRANG BẢNG ĐIỀU KHIỂN
 # ==========================================================
 elif menu == "📊 Bảng Điều Khiển (Lãnh đạo)":
     if "dang_nhap_lanh_dao" not in st.session_state: st.session_state["dang_nhap_lanh_dao"] = False
+
     hien_thi_tieu_de("BẢNG ĐIỀU KHIỂN CHIẾN LƯỢC")
 
     if not st.session_state["dang_nhap_lanh_dao"]:
@@ -245,3 +248,33 @@ elif menu == "📊 Bảng Điều Khiển (Lãnh đạo)":
                         st.info("Chưa có dữ liệu báo cáo nào trong hệ thống.")
             except Exception as e:
                 st.error(f"Không thể tải dữ liệu. Lỗi: {e}")
+
+# ==========================================================
+# 3. TRANG BẢN TIN CHI BỘ (FLIPBOOK) MỚI THÊM
+# ==========================================================
+elif menu == "📖 Bản Tin Chi Bộ":
+    hien_thi_tieu_de("BẢN TIN SINH HOẠT CHI BỘ")
+    
+    st.markdown('<div class="sub-title" style="color: #4CAF50;">Tài liệu sinh hoạt đảng viên hàng tháng (Định dạng Sách lật điện tử)</div>', unsafe_allow_html=True)
+    st.write("---")
+
+    # Tạo cột để căn chỉnh thanh chọn tháng cho đẹp
+    col_chon, col_trong = st.columns([1, 3])
+    with col_chon:
+        thang_chon = st.selectbox("📌 Chọn kỳ xuất bản:", ["Bản tin Tháng 3/2026", "Bản tin Tháng 2/2026", "Bản tin Tháng 1/2026"])
+
+    # ĐÂY LÀ KHO CHỨA LINK FLIPBOOK (SAU NÀY BẠN TỰ THAY LINK CỦA CƠ QUAN VÀO ĐÂY)
+    thu_vien_link = {
+        "Bản tin Tháng 3/2026": "https://heyzine.com/flip-book/701fc3e590.html", # Link sách mẫu 1
+        "Bản tin Tháng 2/2026": "https://heyzine.com/flip-book/5a1b559093.html", # Link sách mẫu 2
+        "Bản tin Tháng 1/2026": "https://heyzine.com/flip-book/b8e0a13ea1.html"  # Link sách mẫu 3
+    }
+
+    link_hien_tai = thu_vien_link[thang_chon]
+
+    # Nhúng khung Flipbook vào web
+    st.markdown(f"""
+        <iframe src="{link_hien_tai}" width="100%" height="700px" frameborder="0" allowfullscreen seamless style="border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);"></iframe>
+    """, unsafe_allow_html=True)
+    
+    st.info("💡 Hướng dẫn: Vuốt từ phải sang trái hoặc bấm vào mép trang sách để lật trang. Bấm biểu tượng ⛶ để xem toàn màn hình.")
