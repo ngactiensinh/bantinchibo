@@ -44,13 +44,21 @@ st.markdown(f"""
 
 st.write("---")
 
-# Bộ lọc chọn tháng
+# Bộ lọc chọn tháng/quý
 col_chon, col_trong = st.columns([1, 3])
 with col_chon:
-    thang_chon = st.selectbox("📌 Chọn kỳ xuất bản:", ["Bản tin Tháng 3/2026", "Bản tin Tháng 2/2026", "Bản tin Tháng 1/2026"])
+    thang_chon = st.selectbox("📌 Chọn kỳ xuất bản:", [
+        "Bản tin Tháng 4/2026", 
+        "Bản tin Quý I/2026",
+        "Bản tin Tháng 3/2026", 
+        "Bản tin Tháng 2/2026", 
+        "Bản tin Tháng 1/2026"
+    ])
 
-# DANH SÁCH LINK FLIPBOOK TỪNG THÁNG
+# DANH SÁCH LINK FLIPBOOK TỪNG THÁNG/QUÝ
 thu_vien_link = {
+    "Bản tin Tháng 4/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THUONG-KY-THANG-4-2026/",
+    "Bản tin Quý I/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-QUY-I-2026/",
     "Bản tin Tháng 3/2026": "https://heyzine.com/flip-book/701fc3e590.html",
     "Bản tin Tháng 2/2026": "https://heyzine.com/flip-book/5a1b559093.html",
     "Bản tin Tháng 1/2026": "https://heyzine.com/flip-book/b8e0a13ea1.html"
