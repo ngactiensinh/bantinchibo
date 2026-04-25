@@ -72,6 +72,7 @@ st.write("---")
 col_chon, col_trong = st.columns([1, 3])
 with col_chon:
     thang_chon = st.selectbox("📌 Chọn kỳ xuất bản:", [
+        "Bản tin Tháng 5/2026",  # <--- Thêm tháng 5 lên đầu tiên để làm mặc định
         "Bản tin Tháng 4/2026", 
         "Bản tin Quý I/2026",
         "Bản tin Tháng 3/2026", 
@@ -81,7 +82,9 @@ with col_chon:
 
 # DANH SÁCH LINK FLIPBOOK TỪNG THÁNG/QUÝ
 thu_vien_link = {
-    "Bản tin Tháng 5/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THANG-5-NAM-2026/",
+        # Sếp dán link Flipbook của tháng 5 vào trong ngoặc kép bên dưới nhé:
+    "Bản tin Tháng 5/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THANG-5-NAM-2026/", 
+    
     "Bản tin Tháng 4/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THUONG-KY-THANG-4-2026/",
     "Bản tin Quý I/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-QUY-I-2026/",
     "Bản tin Tháng 3/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-CHI-BO-THANG-3-2026/",
