@@ -1,7 +1,31 @@
 import streamlit as st
 import base64
+from supabase import create_client, Client # Thêm dòng này
 
 st.set_page_config(page_title="Bản tin Chi bộ - Tuyên Quang", page_icon="📖", layout="wide")
+# ==========================================
+# CẤU HÌNH SUPABASE (DÙNG ĐỂ ĐẾM TRUY CẬP)
+# ==========================================
+SUPABASE_URL = "https://qqzsdxhqrdfvxnlurnyb.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxenNkeGhxcmRmdnhubHVybnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjY0NjAsImV4cCI6MjA5MTIwMjQ2MH0.H62F5zYEZ5l47fS4IdAE2JdRdI7inXQqWG0nvXhn2P8"
+
+try:
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+except:
+    pass
+
+# Hàm đếm lượt truy cập thông minh
+def log_access("Bản tin Sinh hoạt"):
+    key_name = f"da_dem_truy_cap_{app_name}"
+    if key_name not in st.session_state:
+        try:
+            supabase.table("thong_ke_truy_cap").insert({"ten_app": app_name}).execute()
+            st.session_state[key_name] = True
+        except:
+            pass
+
+# Kích hoạt bộ đếm cho trang này
+log_access("Bản tin Sinh hoạt")
 
 st.markdown("""
 <style>
