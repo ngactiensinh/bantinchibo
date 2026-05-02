@@ -75,26 +75,29 @@ st.markdown("### 📚 THƯ VIỆN SỐ SINH HOẠT CHI BỘ")
 st.info("💡 Các đồng chí chạm vào bìa sách hoặc nút 'ĐỌC NGAY' để mở bản tin toàn màn hình.")
 
 # Tạo hàng cột để hiển thị các thẻ sách
-cols = st.columns(4) # Trên PC hiện 4 cột, Mobile tự nhảy thành 1-2 cột
+cols = st.columns(4)
 
 # Duyệt qua kho sách để hiển thị
 for idx, (ten_sach, data) in enumerate(KHO_BAN_TIN.items()):
     with cols[idx % 4]:
-        st.markdown(f"""
+        # Dùng Javascript để tự động nhận diện thiết bị và mở link chuẩn bài
+        js_link = f"""
             <div class="book-card">
                 <div class="book-cover">📖</div>
                 <div class="book-title">{ten_sach}</div>
-                <a href="{data['link']}" target="_top" class="btn-read">📖 ĐỌC NGAY</a>
+                <button onclick="smartOpen('{data['link']}')" class="btn-read" style="border:none; cursor:pointer;">📖 ĐỌC NGAY</button>
             </div>
-        """, unsafe_allow_html=True)
-
-st.markdown("<br><br>", unsafe_allow_html=True)
-
-# 4. NÚT PHỤ: XEM CẢ TỦ SÁCH (Dành cho ai thích xem kệ gỗ)
-with st.expander("📂 Xem toàn bộ kệ sách (Giao diện cũ)"):
-    st.markdown(f"""
-        <iframe style="width:100%; height:600px; border:none;" 
-                src="https://fliphtml5.com/bookcase/yeprz/?v=1" 
-                allowfullscreen="true">
-        </iframe>
-    """, unsafe_allow_html=True)
+            
+            <script>
+            function smartOpen(url) {{
+                // Nếu là điện thoại/máy tính bảng thì phá khung để đọc to
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {{
+                    window.top.location.href = url;
+                }} else {{
+                    // Nếu là máy tính thì mở tab mới cho lành
+                    window.open(url, '_blank');
+                }}
+            }}
+            </script>
+        """
+        st.markdown(js_link, unsafe_allow_html=True)
