@@ -1,102 +1,66 @@
 import streamlit as st
-import base64
-from supabase import create_client, Client # Thêm dòng này
+import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Bản tin Chi bộ - Tuyên Quang", page_icon="📖", layout="wide")
+# ... (Giữ nguyên các phần cấu hình trang, Header, Logo của bạn) ...
+
 # ==========================================
-# CẤU HÌNH SUPABASE (DÙNG ĐỂ ĐẾM TRUY CẬP)
+# 1. KHO DỮ LIỆU TÀI LIỆU SỐ (CẤU TRÚC TỪ ĐIỂN 2 LỚP)
 # ==========================================
-SUPABASE_URL = "https://qqzsdxhqrdfvxnlurnyb.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxenNkeGhxcmRmdnhubHVybnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjY0NjAsImV4cCI6MjA5MTIwMjQ2MH0.H62F5zYEZ5l47fS4IdAE2JdRdI7inXQqWG0nvXhn2P8"
-
-try:
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-except:
-    pass
-
-# Hàm đếm lượt truy cập thông minh
-def log_access(app_name):
-    key_name = f"da_dem_truy_cap_{app_name}"
-    if key_name not in st.session_state:
-        try:
-            supabase.table("thong_ke_truy_cap").insert({"ten_app": app_name}).execute()
-            st.session_state[key_name] = True
-        except:
-            pass
-
-# Kích hoạt bộ đếm cho trang này
-log_access("Bản tin Sinh hoạt")
-
-st.markdown("""
-<style>
-    .header-oval {
-        background-color: #ffffff;
-        border: 4px solid #C8102E;
-        border-radius: 60px;
-        padding: 15px 30px;
-        margin-bottom: 30px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 25px;
-        flex-wrap: wrap;
+# Thay các link "https://fliphtml5.com/..." bằng link iframe thật của bạn
+KHO_SACH = {
+    "📰 Bản tin Sinh hoạt Chi bộ": {
+        "Bản tin Tháng 5/2026": "https://fliphtml5.com/bookcase/xxxx",
+        "Bản tin Tháng 4/2026": "https://fliphtml5.com/bookcase/yyyy"
+    },
+    "📚 Lịch sử Đảng bộ tỉnh": {
+        "Lịch sử Đảng bộ tỉnh (Tập 1)": "https://fliphtml5.com/bookcase/aaaa",
+        "Lịch sử Đảng bộ tỉnh (Tập 2)": "https://fliphtml5.com/bookcase/bbbb",
+        "Lịch sử truyền thống Ngành Tuyên giáo": "https://fliphtml5.com/bookcase/cccc"
+    },
+    "🎯 Văn kiện - Nghị quyết": {
+        "Văn kiện Đại hội đại biểu Đảng bộ tỉnh lần thứ XVII": "https://fliphtml5.com/bookcase/dddd",
+        "Nghị quyết Hội nghị Trung ương 8 khóa XIII": "https://fliphtml5.com/bookcase/eeee"
+    },
+    "🌿 Mô hình Dân vận khéo": {
+        "Sổ tay xây dựng mô hình Dân vận khéo": "https://fliphtml5.com/bookcase/ffff"
     }
-    .main-title { font-size: 32px; font-weight: 900; color: #C8102E; text-transform: uppercase; margin: 0; line-height: 1.2; text-align: center;}
-    .sub-title { font-size: 18px; font-weight: bold; color: #004B87; margin-top: 5px; text-align: center;}
-</style>
-""", unsafe_allow_html=True)
-
-# Lấy Logo từ kho (nếu có)
-logo_html = ""
-try:
-    with open("Logo TGDV.png", "rb") as f:
-        data = base64.b64encode(f.read()).decode("utf-8")
-        logo_html = f'<img src="data:image/png;base64,{data}" style="height: 85px;">'
-except:
-    logo_html = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Qu%E1%BB%91c_huy_Vi%E1%BB%87t_Nam.svg/250px-Qu%E1%BB%91c_huy_Vi%E1%BB%87t_Nam.svg.png" style="height: 85px;">'
-
-st.markdown(f"""
-<div class="header-oval">
-    <div>{logo_html}</div>
-    <div>
-        <div class="main-title">BẢN TIN SINH HOẠT CHI BỘ</div>
-        <div class="sub-title">BAN TUYÊN GIÁO VÀ DÂN VẬN TỈNH ỦY TUYÊN QUANG</div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-st.write("---")
-
-# Bộ lọc chọn tháng/quý
-col_chon, col_trong = st.columns([1, 3])
-with col_chon:
-    thang_chon = st.selectbox("📌 Chọn kỳ xuất bản:", [
-        "Bản tin Tháng 5/2026",  # <--- Thêm tháng 5 lên đầu tiên để làm mặc định
-        "Bản tin Tháng 4/2026", 
-        "Bản tin Quý I/2026",
-        "Bản tin Tháng 3/2026", 
-        "Bản tin Tháng 2/2026", 
-        "Bản tin Tháng 1/2026"
-    ])
-
-# DANH SÁCH LINK FLIPBOOK TỪNG THÁNG/QUÝ
-thu_vien_link = {
-        # Sếp dán link Flipbook của tháng 5 vào trong ngoặc kép bên dưới nhé:
-    "Bản tin Tháng 5/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THANG-5-NAM-2026/", 
-    
-    "Bản tin Tháng 4/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-THUONG-KY-THANG-4-2026/",
-    "Bản tin Quý I/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-QUY-I-2026/",
-    "Bản tin Tháng 3/2026": "https://online.fliphtml5.com/zwykz/BAN-TIN-SINH-HOAT-CHI-BO-THANG-3-2026/",
-    "Bản tin Tháng 2/2026": "https://online.fliphtml5.com/zwykz/okrm/",
-    "Bản tin Tháng 1/2026": "https://online.fliphtml5.com/zwykz/aozs/"
 }
 
-link_hien_tai = thu_vien_link[thang_chon]
+# ==========================================
+# 2. GIAO DIỆN CHỌN SÁCH THÔNG MINH
+# ==========================================
+st.markdown("### 📖 THƯ VIỆN TÀI LIỆU SỐ")
 
-# Nhúng Flipbook vào khung
-st.markdown(f"""
-    <iframe src="{link_hien_tai}" width="100%" height="750px" frameborder="0" allowfullscreen seamless style="border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);"></iframe>
-""", unsafe_allow_html=True)
+# Tạo 2 cột để chọn Thể loại và Tên sách cho gọn gàng
+col1, col2 = st.columns([1, 2])
 
-st.info("💡 Hướng dẫn: Vuốt từ phải sang trái hoặc bấm vào mép trang sách để lật trang. Bấm biểu tượng ⛶ ở góc để xem toàn màn hình.")
+with col1:
+    # Lớp 1: Chọn nhóm tài liệu (Lấy các key chính của KHO_SACH)
+    nhom_tai_lieu = st.selectbox("📌 Chọn Nhóm tài liệu:", list(KHO_SACH.keys()))
+
+with col2:
+    # Lớp 2: Chọn cuốn sách cụ thể (Dựa vào nhóm đã chọn ở Lớp 1)
+    danh_sach_cuon = list(KHO_SACH[nhom_tai_lieu].keys())
+    cuon_sach = st.selectbox("📕 Chọn Cuốn sách / Kỳ xuất bản:", danh_sach_cuon)
+
+# Lấy ra link FlipHTML5 tương ứng với lựa chọn
+link_hien_thi = KHO_SACH[nhom_tai_lieu][cuon_sach]
+
+st.markdown("---")
+
+# ==========================================
+# 3. NHÚNG KHUNG HIỂN THỊ SÁCH (FLIPHTML5)
+# ==========================================
+with st.spinner("Đang tải dữ liệu sách số..."):
+    components.html(
+        f"""
+        <div style="display: flex; justify-content: center; background-color: #555555; border-radius: 8px; padding: 10px;">
+            <iframe style="width:100%; height:750px; border:none; border-radius: 5px;"
+                    src="{link_hien_thi}"
+                    seamless="seamless" scrolling="no" frameborder="0"
+                    allowtransparency="true" allowfullscreen="true">
+            </iframe>
+        </div>
+        """,
+        height=770
+    )
