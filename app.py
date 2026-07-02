@@ -11,7 +11,7 @@ SUPABASE_URL = "https://qqzsdxhqrdfvxnlurnyb.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxenNkeGhxcmRmdnhubHVybnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjY0NjAsImV4cCI6MjA5MTIwMjQ2MH0.H62F5zYEZ5l47fS4IdAE2JdRdI7inXQqWG0nvXhn2P8"
 
 # ⚠️ Đổi mật khẩu quản trị tại đây
-ADMIN_PASSWORD = "tgdv2026"
+ADMIN_PASSWORD = "Admin@2026"
 
 try:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
