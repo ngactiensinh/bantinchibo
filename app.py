@@ -99,7 +99,7 @@ st.markdown(f"""
     <div>{logo_html}</div>
     <div>
         <div class="main-title">BẢN TIN SINH HOẠT CHI BỘ</div>
-        <div class="sub-title">BAN TUYÊN GIÁO VÀ DÂN VẬN TỈNH ỦY TUYÊN QUANG</div>
+        <div class="sub-title">BAN TUYÊN GIÁO TỈNH ỦY TUYÊN QUANG</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
